@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 
-$isLoggedIn = !empty($_SESSION['user']);
+$isLoggedIn = !empty($_SESSION['user']) && is_array($_SESSION['user']);
 $startHref = $isLoggedIn ? 'dashboard/index.php' : 'login/index.php';
 $exitHref = $isLoggedIn ? 'logout.php' : 'signup/index.php';
 $startLabel = $isLoggedIn ? 'Dashboard' : 'Start';
@@ -21,6 +21,7 @@ $infoMessage = isset($_GET['logout']) ? 'You have been logged out successfully.'
     button,
     input,
     select,
+    textarea,
     h1,
     h2,
     h3,
@@ -44,30 +45,58 @@ $infoMessage = isset($_GET['logout']) ? 'You have been logged out successfully.'
       padding: 0;
     }
   </style>
-  <title>Welcome</title>
+  <title>SuggestionBox</title>
 </head>
-<body>
-  <div
-    class="body-index"
-    style="
-      background: url(body-index.png) center;
-      background-size: contain;
-      background-repeat: no-repeat;
-    "
-  >
+<body class="landing">
+  <div class="landing__container">
+    <header class="landing__header">
+      <div class="landing__brand">SuggestionBox</div>
+      <nav class="landing__nav" aria-label="Main navigation">
+        <a class="link" href="<?= htmlspecialchars($startHref, ENT_QUOTES) ?>"><?= htmlspecialchars($startLabel) ?></a>
+        <a class="link" href="<?= htmlspecialchars($exitHref, ENT_QUOTES) ?>"><?= htmlspecialchars($exitLabel) ?></a>
+      </nav>
+    </header>
+
     <?php if ($infoMessage): ?>
-      <div class="form-alert form-alert--success landing-alert">
+      <div class="alert alert--success landing__alert">
         <p><?= htmlspecialchars($infoMessage) ?></p>
       </div>
     <?php endif; ?>
-    <nav class="nav" aria-label="Main navigation">
-      <a class="a" href="<?= htmlspecialchars($startHref, ENT_QUOTES) ?>">
-        <span class="start"><?= htmlspecialchars($startLabel) ?></span>
-      </a>
-      <a class="a2" href="<?= htmlspecialchars($exitHref, ENT_QUOTES) ?>">
-        <span class="exit"><?= htmlspecialchars($exitLabel) ?></span>
-      </a>
-    </nav>
+
+    <main class="landing__main">
+      <section class="hero">
+        <h1 class="hero__title">Collect ideas, act with confidence.</h1>
+        <p class="hero__subtitle">
+          SuggestionBox brings students and administrators together with a transparent feedback loop. Share ideas openly or anonymously and keep every conversation moving forward.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="<?= htmlspecialchars($startHref, ENT_QUOTES) ?>"><?= htmlspecialchars($startLabel) ?></a>
+          <a class="button button--ghost" href="<?= htmlspecialchars($exitHref, ENT_QUOTES) ?>"><?= htmlspecialchars($exitLabel) ?></a>
+        </div>
+        <?php if ($isLoggedIn): ?>
+          <p class="hero__note">Signed in as <?= htmlspecialchars($_SESSION['user']['username'], ENT_QUOTES) ?>.</p>
+        <?php endif; ?>
+      </section>
+
+      <section class="features" aria-label="Platform highlights">
+        <article class="feature-card">
+          <h2 class="feature-card__title">Anonymous or named</h2>
+          <p class="feature-card__text">Students choose when to reveal their identity, letting ideas speak for themselves.</p>
+        </article>
+        <article class="feature-card">
+          <h2 class="feature-card__title">Real-time responses</h2>
+          <p class="feature-card__text">Administrators reply directly to submissions to close the loop quickly.</p>
+        </article>
+        <article class="feature-card">
+          <h2 class="feature-card__title">Organized feedback</h2>
+          <p class="feature-card__text">Track every suggestion and response in a clean, distraction-free dashboard.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="landing__footer">
+      <p class="landing__footer-text">Built for campus communities that listen.</p>
+    </footer>
   </div>
 </body>
 </html>
