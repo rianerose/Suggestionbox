@@ -15,3 +15,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
+
+INSERT INTO `users` (`username`, `password`)
+VALUES
+    ('admin', '$2y$10$V.R2qDe2uSfN6MYfRomsmu9Po5x10zrG4lVTmP7bBPJXM8ENWeSyC');
