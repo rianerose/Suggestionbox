@@ -1,0 +1,15 @@
+.signup-background {
+  background: url(../login/body-login.png) center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.signup-background .login-form {
+  height: auto;
+  min-height: 44.1875rem;
+  padding-bottom: 2.5rem;
+}
+
+.signup-background .button-group {
+  flex-wrap: wrap;
+}
