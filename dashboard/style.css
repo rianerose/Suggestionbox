@@ -1,0 +1,15 @@
+.body-admindashboard,
+.body-admindashboard * {
+  box-sizing: border-box;
+}
+.body-admindashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 0rem;
+  align-items: center;
+  justify-content: flex-start;
+  height: 67.5rem;
+  position: relative;
+  overflow: hidden;
+  object-fit: cover;
+}

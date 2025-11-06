@@ -1,0 +1,171 @@
+.body-login,
+.body-login * {
+  box-sizing: border-box;
+}
+.body-login {
+  padding: 8.0625rem 3.1875rem 4rem 3.1875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0rem;
+  align-items: center;
+  justify-content: flex-start;
+  height: 67.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.login-form {
+  background: #ffffff;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 0.5rem;
+  padding: 3rem 1.5rem 0rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 31rem;
+  height: 44.1875rem;
+  position: relative;
+  overflow: hidden;
+}
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: 0rem;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 21.875rem;
+  height: 6.25rem;
+  position: relative;
+  overflow: hidden;
+  object-fit: cover;
+}
+.username {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.label-for-username {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  position: relative;
+}
+.name-username {
+  border-radius: var(--corner-medium, 0.75rem);
+  border-style: solid;
+  border-color: #000000;
+  border-width: 0.125rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.625rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 3.125rem;
+  position: relative;
+  box-shadow: 0rem 0.25rem 0.25rem 0rem rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.password {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.label-for-password {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  position: relative;
+}
+.name-password {
+  border-radius: var(--corner-medium, 0.75rem);
+  border-style: solid;
+  border-color: #000000;
+  border-width: 0.125rem;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.625rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 3.125rem;
+  position: relative;
+  box-shadow: 0rem 0.25rem 0.25rem 0rem rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.login-button {
+  background: #000000;
+  border-radius: var(--corner-small, 0.5rem);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.login {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  position: relative;
+}
+.signup-button {
+  background: #ffffff;
+  border-radius: var(--corner-small, 0.5rem);
+  border-style: solid;
+  border-color: #000000;
+  border-width: 0.0625rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.signup {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  position: relative;
+}
