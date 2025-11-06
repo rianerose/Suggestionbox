@@ -5,74 +5,65 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-const USER_DATA_FILE = __DIR__ . '/data/users.json';
-
-/**
- * @return array<string, array{username: string, password: string, createdAt: int}>
- */
-function load_users(): array
-{
-    if (!file_exists(USER_DATA_FILE)) {
-        return [];
-    }
-
-    $json = file_get_contents(USER_DATA_FILE);
-    if ($json === false || $json === '') {
-        return [];
-    }
-
-    try {
-        $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-    } catch (\JsonException $exception) {
-        error_log('Failed to decode users file: ' . $exception->getMessage());
-        return [];
-    }
-
-    if (!is_array($data)) {
-        return [];
-    }
-
-    return $data;
-}
-
-/**
- * @param array<string, array{username: string, password: string, createdAt: int}> $users
- */
-function save_users(array $users): void
-{
-    $directory = dirname(USER_DATA_FILE);
-    if (!is_dir($directory)) {
-        mkdir($directory, 0775, true);
-    }
-
-    $json = json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-    if ($json === false) {
-        throw new \RuntimeException('Failed to encode users.');
-    }
-
-    $tempFile = USER_DATA_FILE . '.tmp';
-    $bytes = file_put_contents($tempFile, $json, LOCK_EX);
-    if ($bytes === false) {
-        throw new \RuntimeException('Failed to write users data.');
-    }
-
-    rename($tempFile, USER_DATA_FILE);
-}
-
 function sanitize_username(string $username): string
 {
     return strtolower(trim($username));
 }
 
+function get_db_connection(): \PDO
+{
+    static $pdo = null;
+
+    if ($pdo instanceof \PDO) {
+        return $pdo;
+    }
+
+    $host = getenv('DB_HOST') ?: '127.0.0.1';
+    $port = getenv('DB_PORT') ?: '3306';
+    $database = getenv('DB_NAME') ?: 'my_app';
+    $username = getenv('DB_USER') ?: 'my_app_user';
+    $password = getenv('DB_PASSWORD') ?: 'secret';
+    $charset = 'utf8mb4';
+
+    $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=%s', $host, $port, $database, $charset);
+
+    $options = [
+        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+        \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+        \PDO::ATTR_EMULATE_PREPARES => false,
+    ];
+
+    $pdo = new \PDO($dsn, $username, $password, $options);
+    ensure_users_table_exists($pdo);
+
+    return $pdo;
+}
+
+function ensure_users_table_exists(\PDO $pdo): void
+{
+    $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS users (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(190) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci'
+    );
+}
+
 /**
- * @return array{username: string, password: string, createdAt: int}|null
+ * @return array{username: string, password: string, created_at: string}|null
  */
 function find_user(string $username): ?array
 {
-    $users = load_users();
-    $key = sanitize_username($username);
+    $pdo = get_db_connection();
+    $sql = 'SELECT username, password, created_at FROM users WHERE username = :username LIMIT 1';
+    $statement = $pdo->prepare($sql);
+    $statement->execute(['username' => sanitize_username($username)]);
 
-    return $users[$key] ?? null;
+    $user = $statement->fetch();
+
+    return $user === false ? null : $user;
 }
 
 /**
@@ -89,19 +80,24 @@ function register_user(string $username, string $password): array
         return ['success' => false, 'error' => 'Password must be at least 6 characters.'];
     }
 
-    $users = load_users();
+    $hash = password_hash($password, PASSWORD_DEFAULT);
 
-    if (isset($users[$username])) {
-        return ['success' => false, 'error' => 'Username already exists.'];
+    try {
+        $pdo = get_db_connection();
+        $sql = 'INSERT INTO users (username, password) VALUES (:username, :password)';
+        $statement = $pdo->prepare($sql);
+        $statement->execute([
+            'username' => $username,
+            'password' => $hash,
+        ]);
+    } catch (\PDOException $exception) {
+        if ((int) $exception->errorInfo[1] === 1062) {
+            return ['success' => false, 'error' => 'Username already exists.'];
+        }
+
+        error_log('Failed to register user: ' . $exception->getMessage());
+        return ['success' => false, 'error' => 'An unexpected error occurred.'];
     }
-
-    $users[$username] = [
-        'username' => $username,
-        'password' => password_hash($password, PASSWORD_DEFAULT),
-        'createdAt' => time(),
-    ];
-
-    save_users($users);
 
     return ['success' => true];
 }
@@ -119,7 +115,7 @@ function authenticate_user(string $username, string $password): bool
 function ensure_logged_in(): void
 {
     if (empty($_SESSION['user'])) {
-        header('Location: login.php');
+        header('Location: ../login/index.php');
         exit;
     }
 }
