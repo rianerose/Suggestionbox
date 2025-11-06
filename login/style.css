@@ -43,7 +43,7 @@
   overflow: hidden;
   object-fit: cover;
 }
-.username {
+.field-group {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -53,7 +53,7 @@
   flex-shrink: 0;
   position: relative;
 }
-.label-for-username {
+.label-text {
   color: #000000;
   text-align: left;
   font-family: "Inter-SemiBold", sans-serif;
@@ -61,7 +61,7 @@
   font-weight: 600;
   position: relative;
 }
-.name-username {
+.text-input {
   border-radius: var(--corner-medium, 0.75rem);
   border-style: solid;
   border-color: #000000;
@@ -78,42 +78,14 @@
   position: relative;
   box-shadow: 0rem 0.25rem 0.25rem 0rem rgba(0, 0, 0, 0.25);
   overflow: hidden;
-}
-.password {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  align-items: center;
-  justify-content: flex-start;
-  align-self: stretch;
-  flex-shrink: 0;
-  position: relative;
-}
-.label-for-password {
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 1.125rem;
   color: #000000;
-  text-align: left;
-  font-family: "Inter-SemiBold", sans-serif;
-  font-size: 2rem;
-  font-weight: 600;
-  position: relative;
 }
-.name-password {
-  border-radius: var(--corner-medium, 0.75rem);
-  border-style: solid;
-  border-color: #000000;
-  border-width: 0.125rem;
-  padding: 0.625rem;
-  display: flex;
-  flex-direction: row;
-  gap: 0.625rem;
-  align-items: flex-start;
-  justify-content: flex-start;
-  align-self: stretch;
-  flex-shrink: 0;
-  height: 3.125rem;
-  position: relative;
-  box-shadow: 0rem 0.25rem 0.25rem 0rem rgba(0, 0, 0, 0.25);
-  overflow: hidden;
+.text-input:focus {
+  outline: none;
+  border-color: #205f6d;
+  box-shadow: 0 0 0 0.1875rem rgba(66, 171, 195, 0.35);
 }
 .button-group {
   display: flex;
@@ -136,14 +108,17 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-}
-.login {
   color: #ffffff;
-  text-align: left;
   font-family: "Inter-SemiBold", sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
-  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.login-button:hover,
+.login-button:focus-visible {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
 }
 .signup-button {
   background: #ffffff;
@@ -160,12 +135,41 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-}
-.signup {
   color: #000000;
-  text-align: left;
   font-family: "Inter-SemiBold", sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
-  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.signup-button:hover,
+.signup-button:focus-visible {
+  background: #42abc3;
+  color: #ffffff;
+  border-color: #205f6d;
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(66, 171, 195, 0.4);
+}
+.form-alert {
+  align-self: stretch;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 0.125rem solid;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 1rem;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
+}
+.form-alert--error {
+  background: rgba(215, 68, 68, 0.12);
+  border-color: #d74444;
+  color: #7c1f1f;
+}
+.form-alert--success {
+  background: rgba(66, 171, 195, 0.12);
+  border-color: #205f6d;
+  color: #0c3840;
 }
